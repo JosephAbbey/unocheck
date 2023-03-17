@@ -13,7 +13,7 @@ jobs:
           node-version: 16.x
           cache: "npm"
       - name: Build the extension
-        run: npm build
+        run: "npm run build:plasmo"
       - name: Package the extension into a zip artifact
         run: npm package
       - name: Browser Platform Publish
