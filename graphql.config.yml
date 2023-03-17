@@ -1,0 +1,5 @@
+schema: "./generated/schema.graphql"
+extensions:
+  endpoints:
+    example:
+      url: "http://localhost:3000/api/graphql"

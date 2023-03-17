@@ -1,0 +1,46 @@
+type Account {
+  id: ID!
+  profile: Profile
+  provider: String!
+  providerAccountId: String!
+  type: String!
+  user: User!
+}
+
+type Domain {
+  domain: ID!
+  user: User!
+  verified: Boolean!
+}
+
+type Email {
+  email: ID!
+  user: User!
+  verified: Boolean!
+}
+
+type Profile {
+  account: Account!
+  follower: Boolean
+  image: String!
+  provider: String!
+  username: ID!
+}
+
+type Query {
+  domain(domain: String!): User
+  domains(id: String!): [Domain!]
+  emails(id: String!): [Email!]
+  justDomain(domain: String!): Domain
+  user(provider: String!, username: String!): User
+  userId(id: String!): User
+}
+
+type User {
+  accounts: [Account!]!
+  domains: [Domain!]!
+  email: String
+  emails: [Email!]!
+  id: ID!
+  name: String
+}

@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator pothos {
+  provider = "prisma-pothos-types"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Profile {
+  username          String
+  image             String?
+  account           Account @relation(fields: [provider, providerAccountId], references: [provider, providerAccountId], onDelete: Cascade)
+  provider          String
+  providerAccountId String
+
+  // Verifications:
+  follower Boolean? // or follower adjacent
+
+  @@id([provider, username])
+  @@unique([provider, providerAccountId])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String? @db.Text
+  expires_at        Int?
+  created_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profile Profile?
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Email {
+  email    String  @id
+  verified Boolean
+  userId   String
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Domain {
+  domain   String  @id
+  verified Boolean
+  userId   String
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String? // only here because of next auth
+  email         String?   @unique // only here because of next auth
+  emailVerified DateTime? // only here because of next auth
+  image         String? // only here because of next auth
+  accounts      Account[]
+  sessions      Session[]
+  emails        Email[]
+  domains       Domain[]
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
