@@ -4,6 +4,7 @@ import GithubProvider, { GithubProfile } from "next-auth/providers/github"
 import GoogleProvider, { GoogleProfile } from "next-auth/providers/google"
 import FacebookProvider, { FacebookProfile } from "next-auth/providers/facebook"
 import GitlabProvider, { GitLabProfile } from "next-auth/providers/gitlab"
+import TwitchProvider, { TwitchProfile } from "next-auth/providers/twitch"
 
 import prisma from "../../../lib/prisma"
 
@@ -36,6 +37,10 @@ export const options: AuthOptions = {
       clientId: process.env.GITLAB_ID,
       clientSecret: process.env.GITLAB_SECRET
     }),
+    TwitchProvider({
+      clientId: process.env.TWITCH_ID,
+      clientSecret: process.env.TWITCH_SECRET
+    })
   ],
   callbacks: {
     session: async ({ session, user }) => {
