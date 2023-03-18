@@ -17,7 +17,7 @@ jobs:
       - name: Build the extension
         run: "npm run build:plasmo"
       - name: Package the extension into a zip artifact
-        run: npm package
+        run: npm run package
       - name: Browser Platform Publish
         uses: PlasmoHQ/bpp@v3
         with:
