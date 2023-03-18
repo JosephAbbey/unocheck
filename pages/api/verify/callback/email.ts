@@ -1,12 +1,10 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { createHash, randomBytes } from "crypto"
 import type { NextApiRequest, NextApiResponse } from "next"
-import { getServerSession } from "next-auth/next"
-import EmailProvider from "next-auth/providers/email"
 
 import prisma from "~lib/prisma"
 
-const url = "http://localhost:3000/api/verify"
+const url = process.env.NEXT_PUBLIC_URI + "/api/verify"
 const secret = "hi"
 const adapter = PrismaAdapter(prisma)
 

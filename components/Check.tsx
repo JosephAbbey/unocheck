@@ -172,7 +172,7 @@ export default function Check({ color, username, provider }: CheckProps) {
                   onClick={() =>
                     window
                       .open(
-                        `http://localhost:3000/user/${data.user.id}#${profile.provider}`,
+                        `${process.env.NEXT_PUBLIC_URI}/user/${data.user.id}#${profile.provider}`,
                         "_blank"
                       )
                       .focus()

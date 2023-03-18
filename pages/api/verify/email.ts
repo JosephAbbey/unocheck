@@ -123,8 +123,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     if (r.userId != session.user.id) return res.status(401).end()
 
     await email(identifier, {
-      url: new URL("http://localhost:3000/api/verify"),
-      callbackUrl: "http://localhost:3000/api/verify/callback/email",
+      url: new URL(process.env.NEXT_PUBLIC_URI + "/api/verify"),
+      callbackUrl: process.env.NEXT_PUBLIC_URI + "/api/verify/callback/email",
       adapter: PrismaAdapter(prisma),
       provider: {
         ...EmailProvider({
