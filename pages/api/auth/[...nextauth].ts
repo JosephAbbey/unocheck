@@ -39,7 +39,12 @@ export const options: AuthOptions = {
     }),
     TwitchProvider({
       clientId: process.env.TWITCH_ID,
-      clientSecret: process.env.TWITCH_SECRET
+      clientSecret: process.env.TWITCH_SECRET,
+      authorization: {
+        params: {
+          scope: "openid user:read:email moderator:read:followers"
+        }
+      }
     })
   ],
   callbacks: {
@@ -182,6 +187,36 @@ export const options: AuthOptions = {
               where: {
                 provider_providerAccountId: {
                   provider: "gitlab",
+                  providerAccountId: account.providerAccountId
+                }
+              }
+            })
+          } catch (e) {
+            console.log(e)
+          }
+          break
+        case "twitch":
+          try {
+            console.log("twitch", profile)
+            const followers_ = (await (await fetch("https://api.twitch.tv/helix/channels/followers?broadcaster_id=" + account.providerAccountId, { headers: { authorization: "Bearer " + account.access_token, "client-id": process.env.TWITCH_ID } })).json()).total
+
+            console.log(followers_)
+            await prisma.profile.upsert({
+              create: {
+                username: (<TwitchProfile>profile).preferred_username,
+                providerAccountId: account.providerAccountId,
+                provider: "twitch",
+                image: (<TwitchProfile>profile).picture,
+                follower: followers_ > followers,
+              },
+              update: {
+                username: (<TwitchProfile>profile).preferred_username,
+                image: (<TwitchProfile>profile).picture,
+                follower: followers_ > followers,
+              },
+              where: {
+                provider_providerAccountId: {
+                  provider: "twitch",
                   providerAccountId: account.providerAccountId
                 }
               }
