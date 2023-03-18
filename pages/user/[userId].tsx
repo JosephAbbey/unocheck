@@ -58,7 +58,7 @@ const Post = () => {
   if (data) {
     return (
       <>
-        <div></div>
+        <div>{hash}</div>
         <pre>{JSON.stringify(data.userId, undefined, 2)}</pre>
       </>
     )
