@@ -32,8 +32,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
               verified: true
             }
           })
-          res.redirect("/")
-          break
+          return res.redirect("/")
         }
       }
     } catch (e) {
