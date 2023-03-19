@@ -5,10 +5,12 @@ import { getServerSession } from "next-auth/next"
 import prisma from "~lib/prisma"
 
 import { options } from "../../auth/[...nextauth]"
+import { validate } from "../domain"
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const { identifier } = req.query
   if (identifier instanceof Array) return res.status(400).end()
+  if (!validate(identifier)) return res.status(400).end()
   const session = await getServerSession(req, res, options)
   if (session) {
     const r = await prisma.domain.findUnique({

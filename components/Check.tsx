@@ -9,6 +9,8 @@ import VerifiedIcon from "@mui/icons-material/Verified"
 import YouTubeIcon from "@mui/icons-material/YouTube"
 import React from "react"
 
+import { GitLabIcon, TwitchIcon } from "./icons"
+
 const UserQuery = gql`
   query UserQuery($provider: String!, $username: String!) {
     user(provider: $provider, username: $username) {
@@ -91,7 +93,7 @@ export default function Check({ color, username, provider }: CheckProps) {
           position: absolute;
           width: max-content;
           background-color: ${color.bg};
-          transform: translate(1.2em, 50%);
+          transform: translate(0.7em, 50%);
           border-radius: 0.3em;
           overflow: hidden;
           border: 1px solid black;
@@ -147,6 +149,12 @@ export default function Check({ color, username, provider }: CheckProps) {
         .verified > div > .github {
           background-color: #161b22;
         }
+        .verified > div > .gitlab {
+          background-color: #fc6d26;
+        }
+        .verified > div > .twitch {
+          background-color: #9146ff;
+        }
       `}</style>
       <div className="verified">
         <VerifiedIcon width="1em" fill={color.fg} />
@@ -162,6 +170,10 @@ export default function Check({ color, username, provider }: CheckProps) {
                   <FacebookIcon width="1.5em" fill="white" />
                 ) : profile.provider == "github" ? (
                   <GitHubIcon width="1.5em" fill="white" />
+                ) : profile.provider == "gitlab" ? (
+                  <GitLabIcon width="1.5em" fill="white" />
+                ) : profile.provider == "twitch" ? (
+                  <TwitchIcon width="1.5em" fill="white" />
                 ) : (
                   <></>
                 )}

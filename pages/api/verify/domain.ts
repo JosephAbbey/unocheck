@@ -5,7 +5,7 @@ import prisma from "~lib/prisma"
 
 import { options } from "../auth/[...nextauth]"
 
-const validate = (domain: string): boolean => {
+export const validate = (domain: string): boolean => {
   return Boolean(
     domain.match(
       /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+$/
@@ -14,10 +14,11 @@ const validate = (domain: string): boolean => {
 }
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
-  const { identifier } = req.query
+  var { identifier } = req.query
   if (identifier instanceof Array) return res.status(400).end()
   const session = await getServerSession(req, res, options)
   if (session) {
+    if (identifier.startsWith("www.")) identifier = identifier.substring(4)
     if (!validate(identifier))
       return res.redirect(
         "/verify/domain?identifier=" + identifier + "&error=invalid"

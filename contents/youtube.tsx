@@ -21,6 +21,7 @@ export const getInlineAnchorList: PlasmoGetInlineAnchorList = () => {
 function Content({ anchor }: { anchor: PlasmoCSUIAnchor }) {
   const element = anchor.element.children[0]
   if (element instanceof HTMLDivElement) {
+    anchor.element.parentElement.parentElement.style.overflow = "visible"
     return (
       <Check
         color={{

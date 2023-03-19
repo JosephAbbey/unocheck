@@ -4,6 +4,8 @@ import type { NextApiRequest, NextApiResponse } from "next"
 
 import prisma from "~lib/prisma"
 
+import { validate } from "../email"
+
 const url = process.env.NEXT_PUBLIC_URI + "/api/verify"
 const secret = "hi"
 const adapter = PrismaAdapter(prisma)
@@ -14,6 +16,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   try {
     const token = query?.token as string | undefined
     const identifier = query?.email as string | undefined
+    if (!validate(identifier)) return res.status(400).end()
 
     // If these are missing, the sign-in URL was manually opened without these params or the `sendVerificationRequest` method did not send the link correctly in the email.
     if (!token || !identifier)
